@@ -31,7 +31,6 @@ services:
       - COACH_CODEX_HOME=/codex
       - RP_ID=${RP_ID}       # WebAuthn relying party ID — set to your domain (no scheme/port)
       - ORIGIN=${ORIGIN}     # full origin users hit — must match RP_ID's domain
-      - WEB_PORT=${WEB_PORT}
       - RP_NAME=${RP_NAME}
     volumes:
       - ./data:/data         # users, passkeys, per-user state, session secret — BACK THIS UP
