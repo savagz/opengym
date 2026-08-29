@@ -1,5 +1,3 @@
-name: opengym
-
 services:
   # One-time: download the exercise images + GIFs into ./media (skipped if already there).
   # ~140 MB, from github.com/hasaneyldrm/exercises-dataset (CC).
@@ -22,10 +20,10 @@ services:
     restart: "no"
 
   # Passkey auth + per-user data (Node, no framework).
-  # image: prebuilt (docker compose pull). build: from source (docker compose up --build).
   api:
-    image: ghcr.io/duartesantos8/opengym-api:latest
-    build: ./api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     restart: unless-stopped
     env_file: .env
     environment:
@@ -41,7 +39,8 @@ services:
   # Builds the React frontend (multi-stage) and serves it, proxying /api → api
   # and the exercise media from the shared volume. Single origin for passkeys.
   web:
-    image: ghcr.io/duartesantos8/opengym-web:latest
+    # context is the repo root (needs frontend/ alongside web/Dockerfile) — on EasyPanel this
+    # requires the app's Source/Build Path to point at the repository root, not a subfolder.
     build:
       context: .
       dockerfile: web/Dockerfile
